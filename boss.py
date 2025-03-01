@@ -2,7 +2,7 @@
 import pygame
 from settings import BOSS_SIZE, BOSS_HP, BOSS_SHOOT_INTERVAL
 from utils import load_image
-
+from bullet import Bullet
 
 class Boss(pygame.sprite.Sprite):
     def __init__(self):

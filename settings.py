@@ -6,23 +6,23 @@ SOUNDS_DIR = os.path.join(ASSETS_DIR, 'music')
 
 SCREEN_WIDTH = 1024
 SCREEN_HEIGHT = 1024
-FPS = 60
+FPS = 45
 
 PLAYER_SIZE = (100, 100)
-PLAYER_SPEED = 5
+PLAYER_SPEED = 10
 PLAYER_LIVES = 3
 
 ENEMY_SIZES = {
-    'weak': (50, 50),
-    'medium': (75, 75),
+    'weak': (100, 100),
+    'medium': (100, 100),
     'strong': (100, 100),
-    'asteroid': (60, 60)  # Размер астероида
+    'asteroid': (100, 100)  # Размер астероида
 }
 ENEMY_SPEED = {
     'weak': 2,
-    'medium': 2.5,
-    'strong': 3,
-    'asteroid': 1.5  # Скорость астероида
+    'medium': 2,
+    'strong': 2,
+    'asteroid': 2.5  # Скорость астероида
 }
 ENEMY_HP = {
     'weak': 1,
@@ -38,12 +38,13 @@ BULLET2_SPEED = 15
 BULLET2_COOLDOWN = 10  # секунды
 
 POWERUP_SIZE = (50, 50)
-POWERUP_INTERVAL = 60  # секунды
+POWERUP_INTERVAL = 10  # секунды
 POWERUP_TYPES = ['damage', 'speed', 'life']
 
 BOSS_SIZE = (200, 200)
 BOSS_HP = 20
-BOSS_SHOOT_INTERVAL = 2  # секунды
+BOSS_SHOOT_INTERVAL = 2 # секунды
+BOSS_SPEED = 1
 
 SCORE_PER_ENEMY = {
     'weak': 10,

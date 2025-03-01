@@ -4,7 +4,6 @@ import random
 from settings import *
 from player import Player
 from enemy import Enemy, Asteroid
-from bullet import Bullet
 from powerup import Powerup
 from boss import Boss
 from utils import load_image, load_sound, load_explosion_frames
@@ -73,22 +72,26 @@ class Game:
         self.level = 1
         self.next_powerup_time = pygame.time.get_ticks() + POWERUP_INTERVAL * 1000
 
-        self.player_bullet_damage = 1
+        self.player_bullet_damage = 5
         self.player_bullet_damage_timer = 0
         self.player_speed_boost = 1
         self.player_speed_boost_timer = 0
 
         # Звуки
         self.shoot_sound1 = load_sound('shoot1.wav')
-        self.shoot_sound2 = load_sound('shoot2.wav')
         self.explosion_sound = load_sound('explosion.wav')
-        self.powerup_sound = load_sound('powerup.wav')
-        self.boss_sound = load_sound('boss.wav')
         self.game_over_sound = load_sound('game_over.wav')
 
         # Музыка
         pygame.mixer.music.load(os.path.join(SOUNDS_DIR, 'background_music.mp3'))
         pygame.mixer.music.play(-1)  # Повторять музыку
+
+        # Флаг для включения/выключения звука
+        self.sound_enabled = True
+
+        # Флаги для паузы после взрыва игрока
+        self.player_exploded = False
+        self.player_respawn_time = None
 
     def run(self):
         """
@@ -112,23 +115,24 @@ class Game:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     self.player.shoot(self.bullets, 1)
-                    self.shoot_sound1.play()
-                elif event.button == 3:
-                    self.player.shoot(self.bullets, 2)
-                    self.shoot_sound2.play()
+                    if self.sound_enabled:
+                        self.shoot_sound1.play()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.show_pause_screen()
+                elif event.key == pygame.K_m:  # Клавиша M для включения/выключения звука
+                    self.toggle_sound()
 
     def update(self):
         """
         Обновляет состояние всех спрайтов и проверяет столкновения.
         """
-        self.all_sprites.update(self.dt)
-        self.enemies.update()
-        self.bullets.update()
-        self.powerups.update()
-        self.explosions.update()
+        if not self.player_exploded:
+            self.all_sprites.update()
+            self.enemies.update()
+            self.bullets.update()
+            self.powerups.update()
+            self.explosions.update()
 
         if self.boss:
             self.boss.update()
@@ -149,6 +153,14 @@ class Game:
             if self.player_speed_boost_timer <= 0:
                 self.player.speed /= self.player_speed_boost
                 self.player_speed_boost = 1
+
+        if self.player_exploded and self.player_respawn_time is not None:
+            now = pygame.time.get_ticks()
+            if now - self.player_respawn_time >= 3000:  # 3 секунды паузы
+                self.player_exploded = False
+                self.player.image = self.player.original_image
+                self.player.rect.center = (512, 900)
+                self.player_respawn_time = None
 
     def draw(self):
         """
@@ -176,9 +188,6 @@ class Game:
             for bullet in bullets:
                 enemy.take_damage(self.player_bullet_damage)
                 self.score += SCORE_PER_ENEMY[enemy.type]
-                self.explosion_sound.play()
-                explosion = Explosion(enemy.rect.center, 'sm' if enemy.type != 'strong' else 'lg')
-                self.explosions.add(explosion)
             if enemy.hp <= 0:
                 self.score += SCORE_PER_ENEMY[enemy.type]
                 explosion = Explosion(enemy.rect.center, 'sm' if enemy.type != 'strong' else 'lg')
@@ -191,7 +200,6 @@ class Game:
                 for bullet in bullets:
                     boss.take_damage(self.player_bullet_damage)
                     self.score += SCORE_PER_ENEMY['boss']
-                    self.explosion_sound.play()
                     explosion = Explosion(bullet.rect.center, 'sm')
                     self.explosions.add(explosion)
                 if boss.hp <= 0:
@@ -199,27 +207,36 @@ class Game:
                     explosion = Explosion(boss.rect.center, 'lg')
                     self.explosions.add(explosion)
 
+
         # Проверка столкновений игрока и врагов
         hits = pygame.sprite.spritecollide(self.player, self.enemies, True)
         for hit in hits:
             self.player.take_damage()
-            self.explosion_sound.play()
             explosion = Explosion(hit.rect.center, 'sm' if hit.type != 'strong' else 'lg')
             self.explosions.add(explosion)
+            if self.player.lives > 0:
+                self.player_exploded = True
+                self.player_respawn_time = pygame.time.get_ticks()
+            else:
+                self.game_over()
 
         # Проверка столкновений игрока и пуль
         hits = pygame.sprite.spritecollide(self.player, self.bullets, True)
         for hit in hits:
             self.player.take_damage()
-            self.explosion_sound.play()
             explosion = Explosion(hit.rect.center, 'sm')
             self.explosions.add(explosion)
+            if self.player.lives > 0:
+                self.player_exploded = True
+                self.player_respawn_time = pygame.time.get_ticks()
+            else:
+                self.game_over()
 
         # Проверка столкновений игрока и усилителей
         hits = pygame.sprite.spritecollide(self.player, self.powerups, True)
         for hit in hits:
             if hit.type == 'damage':
-                self.player_bullet_damage = 1.3
+                self.player_bullet_damage = 5
                 self.player_bullet_damage_timer = 30  # 30 секунд усиления
             elif hit.type == 'speed':
                 self.player_speed_boost = 1.5
@@ -227,7 +244,6 @@ class Game:
                 self.player_speed_boost_timer = 10  # 10 секунд усиления
             elif hit.type == 'life':
                 self.player.lives += 1
-            self.powerup_sound.play()
             explosion = Explosion(hit.rect.center, 'sm')
             self.explosions.add(explosion)
 
@@ -235,7 +251,7 @@ class Game:
         if self.player_bullet_damage_timer > 0:
             self.player_bullet_damage_timer -= self.dt
             if self.player_bullet_damage_timer <= 0:
-                self.player_bullet_damage = 1
+                self.player_bullet_damage = 5
 
     def spawn_enemies(self):
         """
@@ -273,16 +289,16 @@ class Game:
         if self.level % 3 == 0:
             self.boss = Boss()
             self.all_sprites.add(self.boss)
-            self.boss_sound.play()
         else:
-            for _ in range(self.level * 5):
+            for _ in range(self.level * 2):
                 self.spawn_enemies()
 
     def game_over(self):
         """
         Обрабатывает конец игры.
         """
-        self.game_over_sound.play()
+        if self.sound_enabled:
+            self.game_over_sound.play()
         self.screen.fill((0, 0, 0))
         text = self.font.render("Game Over", True, (255, 255, 255))
         score_text = self.font.render(f"Score: {self.score}", True, (255, 255, 255))
@@ -334,3 +350,19 @@ class Game:
                     self.running = False
                 if event.type == pygame.KEYUP:
                     waiting = False
+
+    def toggle_sound(self):
+        """
+        Включает или выключает звук.
+        """
+        self.sound_enabled = not self.sound_enabled
+        if self.sound_enabled:
+            pygame.mixer.music.unpause()
+        else:
+            pygame.mixer.music.pause()
+
+
+# Исправляем предупреждения
+if __name__ == "__main__":
+    game = Game()
+    game.run()

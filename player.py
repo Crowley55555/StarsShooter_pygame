@@ -1,8 +1,8 @@
 # player.py
 import pygame
-from settings import PLAYER_SIZE, PLAYER_SPEED, PLAYER_LIVES
+from settings import PLAYER_SIZE, PLAYER_SPEED, PLAYER_LIVES, FPS
 from utils import load_image
-
+from bullet import Bullet
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, x, y):
@@ -23,27 +23,29 @@ class Player(pygame.sprite.Sprite):
         self.bullet2_cooldown = 0
         self.damage_timer = 0
 
-    def update(self, dt):
+    def update(self):
         """
         Обновляет состояние игрока.
-
-        :param dt: Время с прошлого кадра в секундах.
         """
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT]:
-            self.rect.x -= self.speed * dt
-        if keys[pygame.K_RIGHT]:
-            self.rect.x += self.speed * dt
+        mouse_x, _ = pygame.mouse.get_pos()
+        screen_width = 1024  # Предполагаемая ширина экрана
 
-        self.rect.clamp_ip(pygame.Rect(0, 0, 1024, 1024))
+        # Перемещение игрока влево или вправо в зависимости от положения мыши
+        if mouse_x < self.rect.centerx:
+            self.rect.x -= self.speed
+        elif mouse_x > self.rect.centerx:
+            self.rect.x += self.speed
+
+        # Ограничение перемещения игрока внутри экрана
+        self.rect.clamp_ip(pygame.Rect(0, 0, screen_width, 1024))
 
         if self.damage_timer > 0:
-            self.damage_timer -= dt
+            self.damage_timer -= 1 / FPS
             if self.damage_timer <= 0:
                 self.image = self.original_image
 
         if self.bullet2_cooldown > 0:
-            self.bullet2_cooldown -= dt
+            self.bullet2_cooldown -= 1 / FPS
 
     def shoot(self, bullet_group, bullet_type):
         """
@@ -67,4 +69,4 @@ class Player(pygame.sprite.Sprite):
         """
         self.lives -= 1
         self.image = self.damaged_image
-        self.damage_timer = 0.5  # Время показа поврежденного спрайта
+        self.damage_timer = 0.5 * FPS  # Время показа поврежденного спрайта

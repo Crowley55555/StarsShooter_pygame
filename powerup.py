@@ -2,7 +2,7 @@
 import pygame
 from settings import POWERUP_SIZE, POWERUP_TYPES
 from utils import load_image
-
+import random
 
 class Powerup(pygame.sprite.Sprite):
     def __init__(self, x, y):
