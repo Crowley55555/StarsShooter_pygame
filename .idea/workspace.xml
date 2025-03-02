@@ -4,12 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6da615ad-f6d4-4f9a-8566-d15a6b8118cc" name="Changes" comment="Добавлен Readme и скриншоты">
-      <change afterPath="$PROJECT_DIR$/game_functions.py" afterDir="false" />
+    <list default="true" id="6da615ad-f6d4-4f9a-8566-d15a6b8118cc" name="Changes" comment="перепривязал управление с клавиатуры на мышь">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/boss.py" beforeDir="false" afterPath="$PROJECT_DIR$/boss.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bullet.py" beforeDir="false" afterPath="$PROJECT_DIR$/bullet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/enemy.py" beforeDir="false" afterPath="$PROJECT_DIR$/enemy.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/game.py" beforeDir="false" afterPath="$PROJECT_DIR$/game.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/player.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/powerup.py" beforeDir="false" afterPath="$PROJECT_DIR$/powerup.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -140,7 +145,15 @@
       <option name="project" value="LOCAL" />
       <updated>1740861406595</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="перепривязал управление с клавиатуры на мышь">
+      <option name="closed" value="true" />
+      <created>1740927853240</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1740927853240</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -148,6 +161,7 @@
     <MESSAGE value="media added" />
     <MESSAGE value="код частично стабилизирован" />
     <MESSAGE value="Добавлен Readme и скриншоты" />
-    <option name="LAST_COMMIT_MESSAGE" value="Добавлен Readme и скриншоты" />
+    <MESSAGE value="перепривязал управление с клавиатуры на мышь" />
+    <option name="LAST_COMMIT_MESSAGE" value="перепривязал управление с клавиатуры на мышь" />
   </component>
 </project>
