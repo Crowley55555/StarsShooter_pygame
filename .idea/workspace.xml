@@ -4,9 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6da615ad-f6d4-4f9a-8566-d15a6b8118cc" name="Changes" comment="код частично стабилизирован">
+    <list default="true" id="6da615ad-f6d4-4f9a-8566-d15a6b8118cc" name="Changes" comment="Добавлен Readme и скриншоты">
+      <change afterPath="$PROJECT_DIR$/game_functions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bullet.py" beforeDir="false" afterPath="$PROJECT_DIR$/bullet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/game.py" beforeDir="false" afterPath="$PROJECT_DIR$/game.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/player.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,6 +58,11 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.appearance&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\lavro\PycharmProjects\StarsShooter_pygame\assets\screenshots" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="StarsShooter_pygame" />
@@ -124,13 +132,22 @@
       <option name="project" value="LOCAL" />
       <updated>1740860039213</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Добавлен Readme и скриншоты">
+      <option name="closed" value="true" />
+      <created>1740861406595</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1740861406595</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Rep created" />
     <MESSAGE value="media added" />
     <MESSAGE value="код частично стабилизирован" />
-    <option name="LAST_COMMIT_MESSAGE" value="код частично стабилизирован" />
+    <MESSAGE value="Добавлен Readme и скриншоты" />
+    <option name="LAST_COMMIT_MESSAGE" value="Добавлен Readme и скриншоты" />
   </component>
 </project>

@@ -9,6 +9,7 @@ from boss import Boss
 from utils import load_image, load_sound, load_explosion_frames
 
 
+
 class Explosion(pygame.sprite.Sprite):
     def __init__(self, center, size):
         """
@@ -117,6 +118,9 @@ class Game:
                     self.player.shoot(self.bullets, 1)
                     if self.sound_enabled:
                         self.shoot_sound1.play()
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:  # Правая кнопка мыши
+                    if event.button == 1:
+                        self.player.shoot(self.bullets, 2)
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.show_pause_screen()

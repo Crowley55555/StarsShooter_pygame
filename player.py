@@ -1,11 +1,12 @@
 # player.py
 import pygame
-from settings import PLAYER_SIZE, PLAYER_SPEED, PLAYER_LIVES, FPS
+from settings import PLAYER_SIZE, PLAYER_SPEED, PLAYER_LIVES, FPS, SCREEN_WIDTH, SCREEN_HEIGHT
 from utils import load_image
 from bullet import Bullet
 
+
 class Player(pygame.sprite.Sprite):
-    def __init__(self, x, y):
+    def __init__(self,  screen_width, screen_height):
         """
         Инициализирует игрока.
 
@@ -13,31 +14,32 @@ class Player(pygame.sprite.Sprite):
         :param y: Координата y начальной позиции.
         """
         super().__init__()
-        self.original_image = load_image('player.png', PLAYER_SIZE)
+        print(f"Screen Width: {screen_width}, Screen Height: {screen_height}")  # Вывод размеров экрана
+        self.original_image = load_image('player.png', PLAYER_SIZE).convert_alpha()
         self.damaged_image = load_image('player_damaged.png', PLAYER_SIZE)
         self.image = self.original_image
-        self.rect = self.image.get_rect(center=(x, y))
+        self.rect = self.image.get_rect()
+        self.rect.center = (screen_width // 2, screen_height - self.rect.height)
         self.speed = PLAYER_SPEED
         self.lives = PLAYER_LIVES
         self.last_shot_time = 0
         self.bullet2_cooldown = 0
-        self.damage_timer = 0
+        self.damage_timer = 0  # Инициализация damage_timer
+        self.screen_width = SCREEN_WIDTH
+        self.screen_height = SCREEN_HEIGHT
 
     def update(self):
         """
         Обновляет состояние игрока.
         """
-        mouse_x, _ = pygame.mouse.get_pos()
-        screen_width = 1024  # Предполагаемая ширина экрана
+        mouse_x, mouse_y = pygame.mouse.get_pos()
 
-        # Перемещение игрока влево или вправо в зависимости от положения мыши
-        if mouse_x < self.rect.centerx:
-            self.rect.x -= self.speed
-        elif mouse_x > self.rect.centerx:
-            self.rect.x += self.speed
 
-        # Ограничение перемещения игрока внутри экрана
-        self.rect.clamp_ip(pygame.Rect(0, 0, screen_width, 1024))
+        min_x = self.rect.width // 2# Минимальное значение (левая граница)
+        max_x = self.screen_width - self.rect.width // 2  # Максимальное значение (правая граница)
+        # Устанавливаем центр корабля между минимумом и максимумом
+        self.rect.centerx = max(min(mouse_x, max_x), min_x)
+
 
         if self.damage_timer > 0:
             self.damage_timer -= 1 / FPS
